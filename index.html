@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DzakiBot - A Journey of Apology</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Marker Felt', 'Arial Rounded MT Bold', cursive, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 15px 30px rgba(255, 105, 180, 0.2);
+            text-align: center;
+            position: relative;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+            min-height: 400px;
+            border: 3px solid #ffb6c1;
+            backdrop-filter: blur(5px);
+        }
+
+        .card.active {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cute-mascot {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            position: relative;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-15px);
+            }
+
+            60% {
+                transform: translateY(-7px);
+            }
+        }
+
+        .mascot-face {
+            width: 100px;
+            height: 100px;
+            background: #ffb6c1;
+            border-radius: 50%;
+            position: relative;
+            margin: 0 auto;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.3);
+        }
+
+        .mascot-eyes {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .eye {
+            width: 15px;
+            height: 15px;
+            background: #333;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 10px;
+            animation: blink 3s infinite;
+            position: relative;
+        }
+
+        .eye::after {
+            content: '';
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+        }
+
+        @keyframes blink {
+
+            0%,
+            90%,
+            100% {
+                height: 15px;
+            }
+
+            95% {
+                height: 3px;
+            }
+        }
+
+        .mascot-mouth {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 25px;
+            height: 15px;
+            border: 3px solid #333;
+            border-top: none;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .warning-box {
+            background: #fff0f5;
+            border: 2px dashed #ff69b4;
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #ff1493;
+            font-weight: bold;
+            box-shadow: inset 0 0 10px rgba(255, 105, 180, 0.2);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6b8b, #ff8e9e);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+            position: relative;
+            overflow: hidden;
+            font-weight: bold;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+            transform: rotate(45deg);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.6);
+        }
+
+        .btn:hover::before {
+            opacity: 1;
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 10px rgba(255, 105, 180, 0.6);
+        }
+
+        .btn-next {
+            background: linear-gradient(45deg, #ff8fab, #ffb3c6);
+        }
+
+        .btn-forgive {
+            background: linear-gradient(45deg, #a2d2ff, #bde0fe);
+            transition: all 0.3s ease;
+        }
+
+        .btn-not-forgive {
+            background: linear-gradient(45deg, #ffc8dd, #cdb4db);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .floating-dolls {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .doll {
+            position: absolute;
+            width: 50px;
+            height: 80px;
+            animation: float 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .language-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 182, 193, 0.9);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            z-index: 100;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(255, 105, 180, 0.3);
+            transition: all 0.3s;
+        }
+
+        .language-toggle:hover {
+            background: rgba(255, 105, 180, 0.9);
+            transform: scale(1.05);
+        }
+
+        .company-images {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .company-placeholder {
+            width: 80px;
+            height: 60px;
+            background: linear-gradient(45deg, #fff0f5, #ffe5ec);
+            border: 2px dashed #ff69b4;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 5px;
+            font-size: 12px;
+            color: #ff1493;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(255, 105, 180, 0.2);
+        }
+
+        .password-input {
+            padding: 12px;
+            border: 2px solid #ffb6c1;
+            border-radius: 15px;
+            margin: 10px;
+            font-size: 16px;
+            width: 80%;
+            max-width: 300px;
+            background: #fff9fb;
+            color: #ff1493;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .password-input:focus {
+            border-color: #ff69b4;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+        }
+
+        .password-input::placeholder {
+            color: #ffb6c1;
+        }
+
+        .hidden-content {
+            display: none;
+            background: #fff0f5;
+            padding: 15px;
+            border-radius: 15px;
+            margin: 15px 0;
+            border: 2px solid #ffb6c1;
+            box-shadow: inset 0 0 10px rgba(255, 105, 180, 0.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #ffe5ec;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b8b, #ff8fab);
+            width: 12.5%;
+            transition: width 0.5s ease;
+            border-radius: 5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg,
+                    rgba(255, 255, 255, 0.1) 0%,
+                    rgba(255, 255, 255, 0.3) 50%,
+                    rgba(255, 255, 255, 0.1) 100%);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%);
+            }
+
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+        .button-container {
+            position: relative;
+            height: 80px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #forgiveness-message {
+            display: none;
+            background: #fff0f5;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border: 2px solid #ffb6c1;
+            box-shadow: 0 5px 15px rgba(255, 105, 180, 0.2);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.02);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        h2 {
+            color: #ff1493;
+            margin-bottom: 15px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        h3 {
+            color: #ff69b4;
+            margin: 15px 0 10px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .bilingual {
+            margin: 15px 0;
+        }
+
+        .english {
+            margin-bottom: 10px;
+        }
+
+        .chinese {
+            color: #666;
+            font-style: italic;
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            75% {
+                transform: translateX(10px);
+            }
+        }
+
+        /* Sparkle effect */
+        .sparkle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10;
+            animation: sparkle 1s ease-out forwards;
+        }
+
+        @keyframes sparkle {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* Floating blobs background */
+        .blob {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        .blob-1 {
+            width: 300px;
+            height: 300px;
+            background: #ff9a9e;
+            top: -100px;
+            left: -100px;
+            animation: float-blob 15s linear infinite;
+        }
+
+        .blob-2 {
+            width: 400px;
+            height: 400px;
+            background: #fad0c4;
+            bottom: -150px;
+            right: -100px;
+            animation: float-blob 20s linear infinite reverse;
+        }
+
+        .blob-3 {
+            width: 200px;
+            height: 200px;
+            background: #ffb6c1;
+            top: 50%;
+            left: 20%;
+            animation: float-blob 12s linear infinite;
+        }
+
+        @keyframes float-blob {
+
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+
+            25% {
+                transform: translate(50px, 50px);
+            }
+
+            50% {
+                transform: translate(0, 100px);
+            }
+
+            75% {
+                transform: translate(-50px, 50px);
+            }
+        }
+
+        /* Enhanced Envelope Styles */
+        .envelope-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            transition: all 0.5s;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: gentle-float 3s ease-in-out infinite;
+        }
+
+        @keyframes gentle-float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .click-me-text {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                opacity: 1;
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            }
+
+            50% {
+                opacity: 0.7;
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        .envelope {
+            width: 320px;
+            height: 220px;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .envelope:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 10px 20px rgba(255, 105, 180, 0.4));
+        }
+
+        /* Envelope Body (darker) */
+        .envelope-body {
+            position: absolute;
+            width: 320px;
+            height: 220px;
+            background: linear-gradient(145deg, #ff4d6d, #ff6b8b);
+            top: 0;
+            left: 0;
+            z-index: 1;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 8px 25px rgba(255, 77, 109, 0.4);
+        }
+
+        /* Envelope Flap (lighter) */
+        .envelope-flap {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 110px solid #ff8fab;
+            top: 0;
+            left: 0;
+            z-index: 3;
+            transform-origin: bottom center;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        /* Letter inside envelope */
+        .envelope-letter {
+            position: absolute;
+            width: 300px;
+            height: 200px;
+            background: linear-gradient(135deg, #ffffff, #fefefe);
+            top: 10px;
+            left: 10px;
+            z-index: 2;
+            border-radius: 8px;
+            transform: translateY(0);
+            transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid #f0f0f0;
+            opacity: 0;
+        }
+
+        /* Envelope States */
+        .envelope.stage-1 .envelope-flap {
+            transform: rotateX(-180deg);
+            border-top-color: #ffb3c6;
+        }
+
+        .envelope.stage-1 .envelope-letter {
+            opacity: 1;
+            transform: translateY(-30px);
+        }
+
+        .envelope.stage-2 {
+            transform: scale(1.2);
+        }
+
+        .envelope.stage-2 .envelope-letter {
+            transform: translateY(-80px) scale(1.1);
+            z-index: 4;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+        }
+
+        /* Letter content */
+        .letter-content {
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease 0.5s;
+        }
+
+        .envelope.stage-1 .letter-content {
+            opacity: 1;
+        }
+
+        .letter-preview {
+            color: #ff1493;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .letter-subtitle {
+            color: #666;
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        /* Full content transformation */
+        .envelope.stage-3 {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 90vw;
+            height: 90vh;
+            max-width: 600px;
+            max-height: 700px;
+            transform: translate(-50%, -50%);
+            z-index: 1001;
+        }
+
+        .envelope.stage-3 .envelope-body,
+        .envelope.stage-3 .envelope-flap {
+            opacity: 0;
+        }
+
+        .envelope.stage-3 .envelope-letter {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            transform: none;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(255, 105, 180, 0.4);
+            overflow-y: auto;
+        }
+
+        .full-letter-content {
+            padding: 30px;
+            height: 100%;
+            display: none;
+        }
+
+        .envelope.stage-3 .full-letter-content {
+            display: block;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .envelope.stage-3 .letter-content {
+            display: none;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Close button */
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff6b8b;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            z-index: 10;
+            display: none;
+        }
+
+        .envelope.stage-3 .close-button {
+            display: block;
+        }
+
+        .close-button:hover {
+            background: #ff4d6d;
+            transform: scale(1.1);
+        }
+
+        /* Doll styles */
+        .doll {
+            width: 50px;
+            height: 80px;
+            position: relative;
+        }
+
+        .doll-head {
+            width: 30px;
+            height: 30px;
+            background: #ffb6c1;
+            border-radius: 50%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .doll-body {
+            width: 40px;
+            height: 50px;
+            background: #ff8fab;
+            border-radius: 20px;
+            margin: 0 auto;
+            position: relative;
+            top: -5px;
+        }
+
+        .doll-eye {
+            width: 6px;
+            height: 6px;
+            background: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 10px;
+        }
+
+        .doll-eye.left {
+            left: 8px;
+        }
+
+        .doll-eye.right {
+            right: 8px;
+        }
+
+        .doll-mouth {
+            width: 12px;
+            height: 5px;
+            border-bottom: 2px solid #333;
+            border-radius: 0 0 10px 10px;
+            position: absolute;
+            bottom: 5px;
+            left: 9px;
+        }
+
+        .doll-arm {
+            width: 8px;
+            height: 30px;
+            background: #ff8fab;
+            position: absolute;
+            top: 5px;
+        }
+
+        .doll-arm.left {
+            left: -5px;
+            transform: rotate(20deg);
+        }
+
+        .doll-arm.right {
+            right: -5px;
+            transform: rotate(-20deg);
+        }
+
+        .doll-leg {
+            width: 10px;
+            height: 20px;
+            background: #ff6b8b;
+            position: absolute;
+            bottom: -10px;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .doll-leg.left {
+            left: 10px;
+        }
+
+        .doll-leg.right {
+            right: 10px;
+        }
+
+        /* Teasing messages */
+        .tease-message {
+            position: absolute;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+            white-space: nowrap;
+            color: #ff1493;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btn-not-forgive:hover .tease-message {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="floating-dolls" id="dollsContainer"></div>
+
+    <div class="envelope-container" id="envelopeContainer">
+        <div class="envelope-wrapper">
+            <div class="click-me-text" id="clickMeText">
+                <span class="english">Click Me!</span>
+                <span class="chinese">点击我！</span>
+            </div>
+            <div class="envelope" id="envelope">
+                <div class="envelope-body"></div>
+                <div class="envelope-flap"></div>
+                <div class="envelope-letter">
+                    <button class="close-button" onclick="closeEnvelope()">&times;</button>
+                    <div class="letter-content">
+                        <div class="letter-preview">
+                            <div class="english">A Special Message For You!</div>
+                            <div class="chinese">给你的特别消息！</div>
+                        </div>
+                        <div class="letter-subtitle">
+                            <div class="english">Click again to read more...</div>
+                            <div class="chinese">再次点击阅读更多...</div>
+                        </div>
+                    </div>
+                    <div class="full-letter-content">
+                        <div class="cute-mascot">
+                            <div class="mascot-face">
+                                <div class="mascot-eyes">
+                                    <div class="eye"></div>
+                                    <div class="eye"></div>
+                                </div>
+                                <div class="mascot-mouth"></div>
+                            </div>
+                        </div>
+
+                        <div class="bilingual">
+                            <div class="english">
+                                <h2>Hello! I'm DzakiBot 🤖</h2>
+                                <p>Welcome to my interactive journey of getting to know me better!</p>
+                                <p>This is a special message crafted just for you, filled with my story, dreams, and a
+                                    heartfelt apology.</p>
+                            </div>
+                            <div class="chinese">
+                                <h2>你好！我是DzakiBot 🤖</h2>
+                                <p>欢迎来到我的互动旅程，让你更好地了解我！</p>
+                                <p>这是专为你制作的特别消息，充满了我的故事、梦想和真诚的道歉。</p>
+                            </div>
+                        </div>
+
+                        <div class="warning-box">
+                            <div class="english">
+                                💝 This letter contains my sincere feelings and thoughts. I hope you'll read it with an
+                                open heart.
+                            </div>
+                            <div class="chinese">
+                                💝 这封信包含了我真诚的感情和想法。我希望你能用开放的心态阅读它。
+                            </div>
+                        </div>
+
+                        <button class="btn btn-next" onclick="startMainJourney()">
+                            <span class="english">Start My Journey! 🌟</span>
+                            <span class="chinese">开始我的旅程！🌟</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="language-toggle" onclick="toggleLanguage()">EN/中文</button>
+
+<!-- Di dalam container mainContainer, ganti semua card dengan konten dari holo.html -->
+<div class="container" id="mainContainer" style="display: none;">
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <!-- Card 1: Introduction -->
+    <div class="card active" id="card1">
+        <div class="cute-mascot">
+            <div class="mascot-face">
+                <div class="mascot-eyes">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                </div>
+                <div class="mascot-mouth"></div>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h2>Hello! I'm DzakiBot 🤖</h2>
+                <p>Welcome to my interactive journey of getting to know me better!</p>
+            </div>
+            <div class="chinese">
+                <h2>你好！我是DzakiBot 🤖</h2>
+                <p>欢迎来到我的互动旅程，让你更好地了解我！</p>
+            </div>
+        </div>
+
+        <div class="warning-box">
+            <div class="english">
+                ⚠️ WARNING: If you click continue, there's no escape until you finish this journey! Are you ready
+                for this commitment?
+            </div>
+            <div class="chinese">
+                ⚠️ 警告：如果你点击继续，在完成这段旅程之前无法逃脱！你准备好承诺了吗？
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button class="btn btn-next" onclick="nextCard(1)">
+                <span class="english">I Accept the Challenge! 💪</span>
+                <span class="chinese">我接受挑战！💪</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Card 2: Basic Info -->
+    <div class="card" id="card2">
+        <div class="cute-mascot">
+            <div class="mascot-face">
+                <div class="mascot-eyes">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                </div>
+                <div class="mascot-mouth"></div>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h2>About Me - Chapter 1 📖</h2>
+                <p>Hi! I'm a 20-year-old guy from Indonesia 🇮🇩</p>
+                <p>My hobbies include gaming 🎮, reading books 📚, and learning new things 🌟</p>
+                <p>I'm passionate about business and investment 💼 - it's been my dream since childhood!</p>
+            </div>
+            <div class="chinese">
+                <h2>关于我 - 第一章 📖</h2>
+                <p>嗨！我是一个来自印度尼西亚的20岁男孩 🇮🇩</p>
+                <p>我的爱好包括玩游戏🎮、读书📚和学习新事物🌟</p>
+                <p>我对商业和投资充满热情💼 - 这是我从小的梦想！</p>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button class="btn btn-next" onclick="nextCard(2)">
+                <span class="english">Tell me more! 🤔</span>
+                <span class="chinese">告诉我更多！🤔</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Card 3: Early Business -->
+    <div class="card" id="card3">
+        <div class="cute-mascot">
+            <div class="mascot-face">
+                <div class="mascot-eyes">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                </div>
+                <div class="mascot-mouth"></div>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h2>My Business Journey 🚀</h2>
+                <p>I'm quite an introvert, so I spent most of my childhood reading books 📖</p>
+                <p>I started selling things since elementary school! 🏫</p>
+                <p>At age 13, I began seriously studying business. You were probably just playing games at that age!
+                    😄</p>
+                <p>I started with novels, then SIM cards, and finally fashion! 👕</p>
+            </div>
+            <div class="chinese">
+                <h2>我的商业之旅 🚀</h2>
+                <p>我是一个内向的人，所以童年大部分时间都在读书 📖</p>
+                <p>从小学开始我就开始卖东西了！🏫</p>
+                <p>13岁时，我开始认真学习商业。你在那个年龄可能只是在玩游戏！😄</p>
+                <p>我从小说开始，然后是SIM卡，最后是时尚！👕</p>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button class="btn btn-next" onclick="nextCard(3)">
+                <span class="english">Wow, continue! 🌟</span>
+                <span class="chinese">哇，继续！🌟</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Card 4: Big Success -->
+    <div class="card" id="card4">
+        <div class="cute-mascot">
+            <div class="mascot-face">
+                <div class="mascot-eyes">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                </div>
+                <div class="mascot-mouth"></div>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h2>My Biggest Achievement 🏆</h2>
+                <p>At age 15, I achieved my biggest sales milestone!</p>
+                <p>I made $25,000 revenue from selling HypeBeast stuff! 💰</p>
+                <p>At 16, I created my own business called "Arkipelovia" 🏢</p>
+                <p>But then... COVID hit 😷 As I mentioned in Tandem yesterday, it was a devastating blow that
+                    caused my business and revenue to collapse.</p>
+            </div>
+            <div class="chinese">
+                <h2>我最大的成就 🏆</h2>
+                <p>15岁时，我达到了最大的销售里程碑！</p>
+                <p>我通过销售HypeBeast产品获得了25,000美元的收入！💰</p>
+                <p>16岁时，我创建了自己的公司"Arkipelovia"🏢</p>
+                <p>但是...新冠疫情来了😷 正如我昨天在Tandem中提到的，这是一个毁灭性的打击，导致我的生意和收入崩溃了。</p>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button class="btn btn-next" onclick="nextCard(4)">
+                <span class="english">What happened next? 😮</span>
+                <span class="chinese">接下来发生了什么？😮</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Card 5: Programming Journey -->
+    <div class="card" id="card5">
+        <div class="cute-mascot">
+            <div class="mascot-face">
+                <div class="mascot-eyes">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                </div>
+                <div class="mascot-mouth"></div>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h2>The Programming Chapter 💻</h2>
+                <p>COVID led me to discover programming! 🖥️</p>
+                <p>At 17, I taught myself web development</p>
+                <p>I started offering website development services, and the profits helped me rebuild my business!
+                </p>
+                <p>My interest and skills in web development led me to create my own small company, which continues
+                    today!</p>
+            </div>
+            <div class="chinese">
+                <h2>编程篇章 💻</h2>
+                <p>新冠疫情让我发现了编程！🖥️</p>
+                <p>17岁时，我自学了网页开发</p>
+                <p>我开始提供网站开发服务，利润帮助我重建了我的生意！</p>
+                <p>我对网页开发的兴趣和技能让我创建了自己的小公司，一直持续到今天！</p>
+            </div>
+        </div>
+
+        <div class="company-images">
+            <img src="adim.jpg" alt="Company Logo" class="company-placeholder">
+            <img src="raydalio.jpg" alt="Website 1" class="company-placeholder">
+            <img src="warrent.jpg" alt="Website 2" class="company-placeholder">
+            <img src="lok.jpg" alt="Portfolio" class="company-placeholder">
+            </div>
+
+        <div class="button-container">
+            <button class="btn btn-next" onclick="nextCard(5)">
+                <span class="english">Tell me about now! ⏰</span>
+                <span class="chinese">告诉我现在的情况！⏰</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Card 6: Current Life -->
+    <div class="card" id="card6">
+        <div class="cute-mascot">
+            <div class="mascot-face">
+                <div class="mascot-eyes">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                </div>
+                <div class="mascot-mouth"></div>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h2>My Current Life 📅</h2>
+                <p>I'm still studying and working simultaneously. Being tired has become my daily need! 😴</p>
+                <p>I like socializing, but I often lose energy after meeting many people (classic introvert!) 😅</p>
+                <p><strong>My daily routine:</strong></p>
+                <p>• Morning: College 🎓</p>
+                <p>• Afternoon: Checking business income/expenses 📊</p>
+                <p>• Evening: Remote part-time work 💼</p>
+                <p>Of course, I have my own targets for all this work!</p>
+            </div>
+            <div class="chinese">
+                <h2>我现在的生活 📅</h2>
+                <p>我仍在同时学习和工作。疲倦已经成为我的日常需求！😴</p>
+                <p>我喜欢社交，但在见了很多人后经常会失去精力（典型的内向者！）😅</p>
+                <p><strong>我的日常安排：</strong></p>
+                <p>• 上午：上大学 🎓</p>
+                <p>• 下午：检查生意收支 📊</p>
+                <p>• 晚上：远程兼职工作 💼</p>
+                <p>当然，我为所有这些工作都有自己的目标！</p>
+            </div>
+        </div>
+
+        <div>
+            <input type="password" class="password-input" id="targetPassword"
+                placeholder="Ask me for password    ">
+            <br>
+            <button class="btn" onclick="checkPassword()">
+                <span class="english">Unlock My Dreams 🔐</span>
+                <span class="chinese">解锁我的梦想 🔐</span>
+            </button>
+            <div class="hidden-content" id="hiddenTargets">
+                <div class="english">
+                    <p>🎯 <strong>My Secret Targets:</strong></p>
+                    <p>• Build a successful tech company by 25</p>
+                    <p>• Achieve financial freedom for my family</p>
+                    <p>• Create 100+ websites that help businesses grow</p>
+                    <p>• And... maybe find someone special to share this journey with 💕</p>
+                </div>
+                <div class="chinese">
+                    <p>🎯 <strong>我的秘密目标：</strong></p>
+                    <p>• 25岁前建立成功的科技公司</p>
+                    <p>• 为我的家庭实现财务自由</p>
+                    <p>• 创建100+个帮助企业成长的网站</p>
+                    <p>• 还有...也许找到一个特别的人来分享这段旅程💕</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button class="btn btn-next" onclick="nextCard(6)" style="margin-top: 20px;">
+                <span class="english">What about your personality? 🤔</span>
+                <span class="chinese">你的性格如何？🤔</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Card 7: Strengths & Weaknesses -->
+    <div class="card" id="card7">
+        <div class="cute-mascot">
+            <div class="mascot-face">
+                <div class="mascot-eyes">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                </div>
+                <div class="mascot-mouth"></div>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h2>My Honest Self-Assessment 🎭</h2>
+                <h3>😅 My Weaknesses:</h3>
+                <p>• I worry too much about people close to me</p>
+                <p>• I'm really bad at understanding people's feelings (sorry! 🙏)</p>
+
+                <h3>💪 My Strengths:</h3>
+                <p>• Great problem-solving skills</p>
+                <p>• I can analyze opportunities very accurately</p>
+                <p>• I can multitask effectively</p>
+                <p>• Pretty ambitious about my future</p>
+                <p>• And... I'm quite handsome for a guy, hehehe... 😎</p>
+            </div>
+            <div class="chinese">
+                <h2>我的诚实自我评估 🎭</h2>
+                <h3>😅 我的弱点：</h3>
+                <p>• 我太担心身边的人</p>
+                <p>• 我真的很不善于理解别人的感受（抱歉！🙏）</p>
+
+                <h3>💪 我的优点：</h3>
+                <p>• 很棒的解决问题能力</p>
+                <p>• 我能非常准确地分析机会</p>
+                <p>• 我能有效地处理多项任务</p>
+                <p>• 对我的未来很有抱负</p>
+                <p>• 还有...对于一个男生来说，我还挺帅的，嘿嘿嘿...😎</p>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button class="btn btn-next" onclick="nextCard(7)">
+                <span class="english">Time for the real talk... 💝</span>
+                <span class="chinese">是时候说正事了...💝</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Card 8: Apology -->
+    <div class="card" id="card8">
+        <div class="cute-mascot">
+            <div class="mascot-face">
+                <div class="mascot-eyes">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                </div>
+                <div class="mascot-mouth"
+                    style="border-radius: 50%; height: 15px; border: 3px solid #333; border-bottom: none; transform: translateX(-50%) rotate(180deg);">
+                </div>
+            </div>
+        </div>
+        <div class="bilingual">
+            <div class="english">
+                <h2>My Sincere Apology 🙇‍♂️</h2>
+                <p>I know I messed up yesterday on Tandem... 😔</p>
+                <p>I was too focused on my own thoughts and failed to consider your feelings.</p>
+                <p>Even though we just met, I really enjoyed our conversation and didn't mean to make you
+                    uncomfortable.</p>
+                <p>Can you find it in your heart to forgive this silly programmer? 🥺</p>
+            </div>
+            <div class="chinese">
+                <h2>我真诚的道歉 🙇‍♂️</h2>
+                <p>我知道昨天在Tandem上搞砸了... 😔</p>
+                <p>我太专注于自己的想法，没有考虑到你的感受。</p>
+                <p>尽管我们刚认识，我真的很喜欢我们的对话，并不是有意让你不舒服。</p>
+                <p>你能原谅这个愚蠢的程序员吗？🥺</p>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button class="btn btn-forgive" onclick="forgiveMe()">
+                <span class="english">Of course I forgive you! 💖</span>
+                <span class="chinese">我当然原谅你！💖</span>
+            </button>
+            <button class="btn btn-not-forgive" id="notForgiveBtn">
+                <span class="english">Hmm... not sure 🤔</span>
+                <span class="chinese">嗯...不确定 🤔</span>
+                <div class="tease-message" style="top: -30px; left: 50%; transform: translateX(-50%);">
+                    <span class="english">Come on, you know you want to!</span>
+                    <span class="chinese">来吧，你知道你想原谅我的！</span>
+                </div>
+            </button>
+        </div>
+
+        <div id="forgiveness-message">
+            <div class="bilingual">
+                <div class="english">
+                    <h2>Thank you! You're the best! 🌈</h2>
+                    <p>I promise to be more considerate in our future conversations!</p>
+                    <p>As a token of my appreciation, here's a virtual hug: 🤗</p>
+                    <p>Let's chat again soon! (I'll try not to be so awkward next time) 😊</p>
+                </div>
+                <div class="chinese">
+                    <h2>谢谢你！你最棒了！🌈</h2>
+                    <p>我承诺在我们未来的对话中会更加体贴！</p>
+                    <p>作为感谢，送你一个虚拟拥抱：🤗</p>
+                    <p>我们很快再聊吧！（下次我会尽量不那么尴尬）😊</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Current language (0 = English, 1 = Chinese)
+    let currentLanguage = 0;
+    let currentCard = 1;
+    const totalCards = 5;
+
+    // Toggle between English and Chinese
+    function toggleLanguage() {
+        currentLanguage = 1 - currentLanguage; // Toggle between 0 and 1
+        updateLanguage();
+    }
+
+    // Update all elements based on current language
+    function updateLanguage() {
+        const englishElements = document.querySelectorAll('.english');
+        const chineseElements = document.querySelectorAll('.chinese');
+
+        if (currentLanguage === 0) {
+            englishElements.forEach(el => el.style.display = 'block');
+            chineseElements.forEach(el => el.style.display = 'none');
+            document.querySelector('.language-toggle').textContent = 'EN/中文';
+        } else {
+            englishElements.forEach(el => el.style.display = 'none');
+            chineseElements.forEach(el => el.style.display = 'block');
+            document.querySelector('.language-toggle').textContent = '中文/EN';
+        }
+    }
+
+    // Envelope interaction
+    let envelopeStage = 0;
+    const envelope = document.getElementById('envelope');
+    const envelopeContainer = document.getElementById('envelopeContainer');
+    const clickMeText = document.getElementById('clickMeText');
+
+    envelope.addEventListener('click', function() {
+        if (envelopeStage === 0) {
+            // First click - open envelope
+            envelope.classList.add('stage-1');
+            envelopeStage = 1;
+            clickMeText.style.display = 'none';
+        } else if (envelopeStage === 1) {
+            // Second click - zoom in envelope
+            envelope.classList.add('stage-2');
+            envelopeStage = 2;
+            
+            // After a delay, go to full letter view
+            setTimeout(() => {
+                envelope.classList.add('stage-3');
+                envelopeStage = 3;
+                document.querySelector('.close-button').style.display = 'block';
+            }, 800);
+        }
+    });
+
+    function closeEnvelope() {
+        envelope.classList.remove('stage-3');
+        envelopeStage = 2;
+        document.querySelector('.close-button').style.display = 'none';
+    }
+
+    // Start main journey after envelope
+    function startMainJourney() {
+        envelopeContainer.style.opacity = '0';
+        setTimeout(() => {
+            envelopeContainer.style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'block';
+            createFloatingDolls();
+        }, 500);
+    }
+
+    // Create floating dolls
+    function createFloatingDolls() {
+        const dollsContainer = document.getElementById('dollsContainer');
+        const dollCount = 10;
+        
+        for (let i = 0; i < dollCount; i++) {
+            setTimeout(() => {
+                const doll = document.createElement('div');
+                doll.className = 'doll';
+                doll.style.left = `${Math.random() * 100}vw`;
+                doll.style.animationDuration = `${8 + Math.random() * 7}s`;
+                doll.style.animationDelay = `${Math.random() * 5}s`;
+                
+                doll.innerHTML = `
+                    <div class="doll-head">
+                        <div class="doll-eye left"></div>
+                        <div class="doll-eye right"></div>
+                        <div class="doll-mouth"></div>
+                    </div>
+                    <div class="doll-body">
+                        <div class="doll-arm left"></div>
+                        <div class="doll-arm right"></div>
+                        <div class="doll-leg left"></div>
+                        <div class="doll-leg right"></div>
+                    </div>
+                `;
+                
+                dollsContainer.appendChild(doll);
+            }, i * 1000);
+        }
+    }
+
+    // Card navigation
+    function nextCard(current) {
+        document.getElementById(`card${current}`).classList.remove('active');
+        document.getElementById(`card${current + 1}`).classList.add('active');
+        currentCard = current + 1;
+        
+        // Update progress bar
+        const progress = (currentCard / totalCards) * 100;
+        document.getElementById('progressFill').style.width = `${progress}%`;
+    }
+
+    // Forgiveness button
+    function forgiveMe() {
+        document.getElementById('forgiveness-message').style.display = 'block';
+        document.querySelector('.btn-forgive').style.display = 'none';
+        document.querySelector('.btn-not-forgive').style.display = 'none';
+        
+        // Create celebration effect
+        celebrate();
+    }
+
+    // Not forgive button tease
+    document.getElementById('notForgiveBtn').addEventListener('mouseover', function() {
+        this.classList.add('shake');
+        
+        // Move button away from cursor
+        const rect = this.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+        
+        // Calculate distance from cursor to center
+        const distanceX = event.clientX - centerX;
+        const distanceY = event.clientY - centerY;
+        
+        // Move in opposite direction
+        this.style.transform = `translate(${-distanceX * 0.2}px, ${-distanceY * 0.2}px)`;
+    });
+
+    document.getElementById('notForgiveBtn').addEventListener('mouseout', function() {
+        this.classList.remove('shake');
+        this.style.transform = 'none';
+    });
+
+    // Celebration effect
+    function celebrate() {
+        // Create sparkles
+        for (let i = 0; i < 50; i++) {
+            createSparkle();
+        }
+        
+        // Make mascot happy
+        const mouth = document.querySelector('#card5 .mascot-mouth');
+        mouth.style.borderRadius = '50%';
+        mouth.style.height = '15px';
+        mouth.style.border = '3px solid #333';
+        mouth.style.borderTop = 'none';
+        mouth.style.borderBottom = 'none';
+        mouth.style.backgroundColor = '#333';
+    }
+
+    function createSparkle() {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        
+        // Random position in the card
+        const card = document.getElementById('card5');
+        const rect = card.getBoundingClientRect();
+        
+        sparkle.style.left = `${Math.random() * rect.width}px`;
+        sparkle.style.top = `${Math.random() * rect.height}px`;
+        
+        // Random color
+        const colors = ['#ff6b8b', '#ffb3c6', '#a2d2ff', '#bde0fe', '#ffc8dd'];
+        sparkle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        // Random size
+        const size = 3 + Math.random() * 7;
+        sparkle.style.width = `${size}px`;
+        sparkle.style.height = `${size}px`;
+        
+        // Random animation duration
+        sparkle.style.animationDuration = `${0.5 + Math.random() * 1.5}s`;
+        
+        card.appendChild(sparkle);
+        
+        // Remove after animation
+        setTimeout(() => {
+            sparkle.remove();
+        }, 1000);
+    }
+    // Tambahkan fungsi-fungsi ini ke dalam script yang sudah ada
+        function checkPassword() {
+            const password = document.getElementById('targetPassword').value;
+            const hiddenContent = document.getElementById('hiddenTargets');
+
+            if (password.toLowerCase() === 'will u forgive me') {
+                hiddenContent.style.display = 'block';
+                createSparkles(hiddenContent);
+            } else {
+                alert(currentLanguage === 0 ? "Wrong password! Hint: It's what I'm chasing..." : "密码错误！提示：这是我在追求的东西...");
+                document.getElementById('targetPassword').classList.add('shake');
+                setTimeout(() => {
+                    document.getElementById('targetPassword').classList.remove('shake');
+                }, 500);
+            }
+        }
+
+        function createSparkles(element) {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.style.left = `${Math.random() * 100}%`;
+                    sparkle.style.top = `${Math.random() * 100}%`;
+                    sparkle.style.animationDelay = `${Math.random() * 0.5}s`;
+                    element.appendChild(sparkle);
+
+                    setTimeout(() => {
+                        sparkle.remove();
+                    }, 1000);
+                }, i * 100);
+            }
+        }
+
+        // Fungsi nextCard yang sudah ada perlu disesuaikan untuk 8 card
+        function nextCard(current) {
+            document.getElementById(`card${current}`).classList.remove('active');
+            document.getElementById(`card${current + 1}`).classList.add('active');
+            currentCard = current + 1;
+
+            // Update progress bar
+            const progress = (currentCard / 8) * 100; // Total card sekarang 8
+            document.getElementById('progressFill').style.width = `${progress}%`;
+        }
+
+    // Initialize
+    updateLanguage();
+</script>
